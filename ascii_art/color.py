@@ -2,7 +2,6 @@
 
 import os
 import sys
-from typing import List, Optional, Tuple
 
 
 def supports_truecolor() -> bool:
@@ -69,8 +68,8 @@ def colorize_char(char: str, r: int, g: int, b: int, mode: str = "truecolor") ->
 
 
 def render_colored(
-    rows: List[List[Tuple[str, Tuple[int, int, int]]]],
-    mode: Optional[str] = None,
+    rows: list[list[tuple[str, tuple[int, int, int]]]],
+    mode: str | None = None,
 ) -> str:
     """Render color data as an ANSI-colored string.
 

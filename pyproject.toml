@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Generate ASCII art from images — plain, colored terminal, or HTML output."
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = ["Pillow>=10.0"]
 
 [project.scripts]

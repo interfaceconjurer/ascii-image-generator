@@ -1,7 +1,6 @@
 """Core ASCII art conversion logic."""
 
 from pathlib import Path
-from typing import List, Tuple, Union
 
 from PIL import Image
 
@@ -9,7 +8,7 @@ from PIL import Image
 DEFAULT_CHARS = "B S#&@$%*!:. "
 
 
-def load_image(path: Union[str, Path]) -> Image.Image:
+def load_image(path: str | Path) -> Image.Image:
     """Load an image from disk."""
     path = Path(path)
     if not path.exists():
@@ -44,7 +43,7 @@ def pixels_to_ascii(img: Image.Image, chars: str = DEFAULT_CHARS) -> str:
 
 
 def image_to_ascii(
-    path: Union[str, Path],
+    path: str | Path,
     width: int = 120,
     chars: str = DEFAULT_CHARS,
 ) -> str:
@@ -70,10 +69,10 @@ def image_to_ascii(
 
 
 def get_color_data(
-    path: Union[str, Path],
+    path: str | Path,
     width: int = 120,
     chars: str = DEFAULT_CHARS,
-) -> List[List[Tuple[str, Tuple[int, int, int]]]]:
+) -> list[list[tuple[str, tuple[int, int, int]]]]:
     """Convert an image to ASCII with per-character RGB color data.
 
     Returns a list of rows, each row a list of (char, (r, g, b)) tuples.
@@ -90,7 +89,7 @@ def get_color_data(
     ascii_str = pixels_to_ascii(grayscale, chars)
 
     # Pair each character with its color
-    rows: List[List[Tuple[str, Tuple[int, int, int]]]] = []
+    rows: list[list[tuple[str, tuple[int, int, int]]]] = []
     for y in range(rgb_img.height):
         row = []
         for x in range(rgb_img.width):
