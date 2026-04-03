@@ -3,6 +3,7 @@
 import argparse
 import sys
 from pathlib import Path
+from typing import List, Optional
 
 from .color import render_colored
 from .core import DEFAULT_CHARS, get_color_data, image_to_ascii
@@ -44,7 +45,7 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main(argv: list[str] | None = None) -> int:
+def main(argv: Optional[List[str]] = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
 

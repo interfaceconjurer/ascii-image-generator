@@ -2,10 +2,11 @@
 
 import html
 from pathlib import Path
+from typing import List, Tuple, Union
 
 
 def render_html(
-    rows: list[list[tuple[str, tuple[int, int, int]]]],
+    rows: List[List[Tuple[str, Tuple[int, int, int]]]],
     title: str = "ASCII Art",
 ) -> str:
     """Render color data as a self-contained HTML document.
@@ -57,8 +58,8 @@ def render_html(
 
 
 def save_html(
-    rows: list[list[tuple[str, tuple[int, int, int]]]],
-    output_path: str | Path,
+    rows: List[List[Tuple[str, Tuple[int, int, int]]]],
+    output_path: Union[str, Path],
     title: str = "ASCII Art",
 ) -> Path:
     """Render and save colored ASCII art as an HTML file.
