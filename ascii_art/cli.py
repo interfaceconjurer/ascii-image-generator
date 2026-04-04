@@ -16,14 +16,14 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("image", type=Path, help="Path to the input image")
     parser.add_argument(
-        "-w", "--width", type=int, default=120, help="Output width in characters (default: 120)"
+        "-w", "--width", type=int, default=120, help="Output width in characters (default: %(default)s)"
     )
     parser.add_argument(
         "-c",
         "--chars",
         type=str,
         default=DEFAULT_CHARS,
-        help=f'Character ramp from dark to light (default: "{DEFAULT_CHARS}")',
+        help='Character ramp from dark to light (default: "B S#&@$%%*!:. ")',
     )
     parser.add_argument(
         "-m",
