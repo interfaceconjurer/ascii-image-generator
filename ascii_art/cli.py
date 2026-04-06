@@ -7,6 +7,7 @@ from pathlib import Path
 from .color import render_colored
 from .core import DEFAULT_CHARS, get_color_data, image_to_ascii
 from .html_output import save_html
+from .svg_output import save_svg
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -28,7 +29,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "-m",
         "--mode",
-        choices=["plain", "color", "html"],
+        choices=["plain", "color", "html", "svg"],
         default="color",
         help="Output mode (default: color)",
     )
@@ -121,5 +122,27 @@ def main(argv: list[str] | None = None) -> int:
         output_path = args.output or Path("ascii_art.html")
         save_html(rows, output_path, title=args.image.stem, pixel_width=args.pixel_width)
         print(f"Saved HTML to {output_path}")
+
+    elif args.mode == "svg":
+        rows = get_color_data(
+            args.image,
+            width=args.width,
+            chars=args.chars,
+            saturation=args.saturation,
+            brightness=args.brightness,
+            invert=args.invert,
+            rainbow=args.rainbow,
+        )
+        output_path = args.output or Path("ascii_art.svg")
+        # Calculate char dimensions based on pixel width if provided
+        if args.pixel_width and rows:
+            char_count = len(rows[0])
+            char_width = args.pixel_width / char_count
+            char_height = char_width * 1.6  # Maintain aspect ratio
+        else:
+            char_width = 10.0
+            char_height = 16.0
+        save_svg(rows, output_path, title=args.image.stem, char_width=char_width, char_height=char_height)
+        print(f"Saved SVG to {output_path}")
 
     return 0
