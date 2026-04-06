@@ -39,6 +39,36 @@ def build_parser() -> argparse.ArgumentParser:
         help="Terminal color mode (default: auto-detect)",
     )
     parser.add_argument(
+        "-s",
+        "--saturation",
+        type=float,
+        default=1.0,
+        help="Saturation multiplier for color modes (default: 1.0, try 1.5-2.0 for more vibrant)",
+    )
+    parser.add_argument(
+        "-b",
+        "--brightness",
+        type=float,
+        default=1.0,
+        help="Brightness multiplier for color modes (default: 1.0, try 1.2-1.5 for brighter)",
+    )
+    parser.add_argument(
+        "--pixel-width",
+        type=int,
+        default=None,
+        help="Output width in pixels for HTML mode (calculates font-size automatically)",
+    )
+    parser.add_argument(
+        "--invert",
+        action="store_true",
+        help="Invert the image colors (black becomes white, white becomes black)",
+    )
+    parser.add_argument(
+        "--rainbow",
+        action="store_true",
+        help="Apply rainbow gradient colors instead of original image colors",
+    )
+    parser.add_argument(
         "-o", "--output", type=Path, default=None, help="Save output to file instead of stdout"
     )
     return parser
@@ -53,7 +83,7 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     if args.mode == "plain":
-        result = image_to_ascii(args.image, width=args.width, chars=args.chars)
+        result = image_to_ascii(args.image, width=args.width, chars=args.chars, invert=args.invert)
         if args.output:
             args.output.write_text(result, encoding="utf-8")
             print(f"Saved to {args.output}")
@@ -61,7 +91,15 @@ def main(argv: list[str] | None = None) -> int:
             print(result)
 
     elif args.mode == "color":
-        rows = get_color_data(args.image, width=args.width, chars=args.chars)
+        rows = get_color_data(
+            args.image,
+            width=args.width,
+            chars=args.chars,
+            saturation=args.saturation,
+            brightness=args.brightness,
+            invert=args.invert,
+            rainbow=args.rainbow,
+        )
         color_mode = None if args.color_mode == "auto" else args.color_mode
         result = render_colored(rows, mode=color_mode)
         if args.output:
@@ -71,9 +109,17 @@ def main(argv: list[str] | None = None) -> int:
             print(result)
 
     elif args.mode == "html":
-        rows = get_color_data(args.image, width=args.width, chars=args.chars)
+        rows = get_color_data(
+            args.image,
+            width=args.width,
+            chars=args.chars,
+            saturation=args.saturation,
+            brightness=args.brightness,
+            invert=args.invert,
+            rainbow=args.rainbow,
+        )
         output_path = args.output or Path("ascii_art.html")
-        save_html(rows, output_path, title=args.image.stem)
+        save_html(rows, output_path, title=args.image.stem, pixel_width=args.pixel_width)
         print(f"Saved HTML to {output_path}")
 
     return 0
