@@ -2,6 +2,8 @@
 
 ![ASCII Art Sunset Example](samples/beautiful-sunset.svg)
 
+![ASCII Art Gradient Example](samples/gradient-sunset.svg)
+
 Generate ASCII art from images — plain text, colored terminal output, HTML, or SVG.
 
 Based on [this article](https://dev.to/anuragrana/generating-ascii-art-from-colored-image-using-python-4ace), extended with ANSI color support, HTML/SVG output, rainbow gradients, color enhancement, and custom character ramps.
@@ -35,6 +37,9 @@ ascii-art image.jpg --mode svg -o output.svg
 # Rainbow gradient with enhanced colors
 ascii-art image.jpg --mode svg --rainbow --brightness 1.5 --pixel-width 800
 
+# Custom gradient (2+ colors, dark purple → purple → gold → dark gold)
+ascii-art image.jpg --gradient "#3D1A4D,#9B59B6,#FFD700,#B8860B" --mode svg
+
 # Custom width and character set
 ascii-art image.jpg -w 80 -c " .:-=+*#%@"
 
@@ -54,6 +59,7 @@ ascii-art image.jpg --invert --chars " .·•●"
 | `--pixel-width` | - | Output width in pixels (HTML/SVG) |
 | `--invert` | - | Invert image colors (negative) |
 | `--rainbow` | - | Apply rainbow gradient |
+| `--gradient` | - | Custom gradient (2+ hex colors, e.g., `#FF0000,#0000FF`) |
 | `--color-mode` | `auto` | `auto`, `truecolor`, `256`, or `none` |
 | `-o, --output` | stdout | Save to file |
 
