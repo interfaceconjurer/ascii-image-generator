@@ -110,6 +110,7 @@ def get_color_data(
     brightness: float = 1.0,
     invert: bool = False,
     rainbow: bool = False,
+    gradient: list[tuple[int, int, int]] | None = None,
 ) -> list[list[tuple[str, tuple[int, int, int]]]]:
     """Convert an image to ASCII with per-character RGB color data.
 
@@ -121,6 +122,9 @@ def get_color_data(
         brightness: Brightness multiplier (1.0 = no change, >1.0 = brighter).
         invert: If True, invert the grayscale values for character mapping.
         rainbow: If True, apply rainbow gradient colors instead of original colors.
+        gradient: If provided, apply custom gradient from top-left to bottom-right.
+                 List of 2+ RGB tuples: [(r1,g1,b1), (r2,g2,b2), ...].
+                 Colors are interpolated along the diagonal gradient path.
 
     Returns a list of rows, each row a list of (char, (r, g, b)) tuples.
     """
@@ -157,6 +161,46 @@ def get_color_data(
                 # Use grayscale for saturation, keep brightness at maximum
                 # Dark areas = less saturated (more white), bright areas = fully saturated
                 r, g, b = colorsys.hsv_to_rgb(hue, gray_val, 1.0)
+                color = (int(r * 255), int(g * 255), int(b * 255))
+
+            # Apply custom gradient if requested
+            elif gradient:
+                # Get grayscale value for saturation (shape definition)
+                gray_val = grayscale.getpixel((x, y)) / 255.0
+                # Calculate diagonal position from top-left (0.0) to bottom-right (1.0)
+                t = (x / rgb_img.width + y / rgb_img.height) / 2.0
+
+                # Find which segment of the gradient we're in
+                num_colors = len(gradient)
+                if num_colors == 2:
+                    # Simple two-color gradient
+                    color1, color2 = gradient[0], gradient[1]
+                    segment_t = t
+                else:
+                    # Multi-stop gradient: divide t into segments
+                    segment_size = 1.0 / (num_colors - 1)
+                    segment_index = min(int(t / segment_size), num_colors - 2)
+                    color1 = gradient[segment_index]
+                    color2 = gradient[segment_index + 1]
+                    # Calculate position within this segment (0.0 to 1.0)
+                    segment_t = (t - segment_index * segment_size) / segment_size
+
+                # Interpolate between color1 and color2 within this segment
+                r_grad = color1[0] + (color2[0] - color1[0]) * segment_t
+                g_grad = color1[1] + (color2[1] - color1[1]) * segment_t
+                b_grad = color1[2] + (color2[2] - color1[2]) * segment_t
+
+                # Convert gradient color to HSV
+                h, s, v = colorsys.rgb_to_hsv(r_grad / 255.0, g_grad / 255.0, b_grad / 255.0)
+                # Modulate saturation and brightness by grayscale to preserve image structure
+                # Use power curve to keep colors more vibrant in darker areas
+                # gray_val^0.5 reduces desaturation effect (dark areas retain more color)
+                saturation_factor = gray_val ** 0.5
+                brightness_factor = 0.3 + (0.7 * gray_val)  # Darker areas = 30% brightness, bright areas = 100%
+                s = min(s * saturation_factor, 1.0)
+                v = brightness_factor
+                # Convert back to RGB
+                r, g, b = colorsys.hsv_to_rgb(h, s, v)
                 color = (int(r * 255), int(g * 255), int(b * 255))
 
             # Apply color adjustments

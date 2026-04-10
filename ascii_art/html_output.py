@@ -48,6 +48,7 @@ def render_html(
     <title>{escaped_title}</title>
     <style>
         body {{
+            background: #000;
             display: flex;
             justify-content: center;
             padding: 20px;
