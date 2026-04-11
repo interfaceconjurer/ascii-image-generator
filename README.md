@@ -1,4 +1,4 @@
-# ascii-image-generator
+# ASCII Image Generator
 
 ![ASCII Art Sunset Example](samples/beautiful-sunset.svg)
 
@@ -63,19 +63,19 @@ ascii-art image.jpg --invert --chars " .·•●"
 
 ## Options
 
-| Flag | Default | Description |
-|------|---------|-------------|
-| `-w, --width` | `120` | Output width in characters |
-| `-m, --mode` | `color` | `plain`, `color`, `html`, or `svg` |
-| `-c, --chars` | `B S#&@$%*!:. ` | Character ramp (dark → light) |
-| `-s, --saturation` | `1.0` | Color saturation multiplier (try 1.5-2.0) |
-| `-b, --brightness` | `1.0` | Brightness multiplier (try 1.2-1.5) |
-| `--pixel-width` | - | Output width in pixels (HTML/SVG) |
-| `--invert` | - | Invert image colors (negative) |
-| `--rainbow` | - | Apply rainbow gradient |
-| `--gradient` | - | Custom gradient (2+ hex colors, e.g., `#FF0000,#0000FF`) |
-| `--color-mode` | `auto` | `auto`, `truecolor`, `256`, or `none` |
-| `-o, --output` | stdout | Save to file |
+| Flag               | Default         | Description                                              |
+| ------------------ | --------------- | -------------------------------------------------------- |
+| `-w, --width`      | `120`           | Output width in characters                               |
+| `-m, --mode`       | `color`         | `plain`, `color`, `html`, or `svg`                       |
+| `-c, --chars`      | `B S#&@$%*!:. ` | Character ramp (dark → light)                            |
+| `-s, --saturation` | `1.0`           | Color saturation multiplier (try 1.5-2.0)                |
+| `-b, --brightness` | `1.0`           | Brightness multiplier (try 1.2-1.5)                      |
+| `--pixel-width`    | -               | Output width in pixels (HTML/SVG)                        |
+| `--invert`         | -               | Invert image colors (negative)                           |
+| `--rainbow`        | -               | Apply rainbow gradient                                   |
+| `--gradient`       | -               | Custom gradient (2+ hex colors, e.g., `#FF0000,#0000FF`) |
+| `--color-mode`     | `auto`          | `auto`, `truecolor`, `256`, or `none`                    |
+| `-o, --output`     | stdout          | Save to file                                             |
 
 ## Python API
 
